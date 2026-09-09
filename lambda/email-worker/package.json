@@ -1,0 +1,16 @@
+{
+  "name": "email-worker",
+  "version": "1.0.0",
+  "description": "lambda function to send emails using AWS SES",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@aws-sdk/client-ses": "^3.1129.0"
+  }
+}
