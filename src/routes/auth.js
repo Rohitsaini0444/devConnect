@@ -4,6 +4,7 @@ const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const { validateUserData } = require('../utils/validator');
 const { run } = require('../utils/sendEmail');
+const { sendEmailMessageToQueue } = require('../services/emailQueue.service');
 
 // Signup user
 router.post('/signup', async (req, res) => {
@@ -23,8 +24,14 @@ router.post('/signup', async (req, res) => {
         res.cookie('token', token, { httpOnly: true, expires: new Date(Date.now() + 3600000) });
         try {
             if (process.env.EMAIL_SERVICE_ENABLED === true || process.env.EMAIL_SERVICE_ENABLED === 'true') {
-                const emailResult = await run("Welcome to DevConnect", "Thank you for signing up! We're excited to have you on board. If you have any questions or need assistance, feel free to reach out to our support team.", savedUser.email);
-                console.log('Email sent:', emailResult);
+                 const emailData = {
+                    subject: "Welcome to DevConnect",
+                    body: "Thank you for signing up! We're excited to have you on board. If you have any questions or need assistance, feel free to reach out to our support team.",
+                    recipient: savedUser.email,
+                    sender: process.env.SENDER_EMAIL_ADDRESS
+                };
+                await sendEmailMessageToQueue(emailData);
+                console.log('Email message sent to queue successfully');
             }
         } catch (error) {
             console.error('Error sending welcome email:', error);
@@ -77,7 +84,7 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/logout', (req, res) => {
-    res.cookie('token', null, { expires: new Date(Date.now()) });
+    res.clearCookie('token');
     res.send({
         message: "User logged out successfully"
     })

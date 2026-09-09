@@ -19,8 +19,13 @@ const sendWeeklySignupReportToAdmin = async () => {
         const adminEmailAddresses = process.env.ADMIN_EMAIL_ADDRESS.split(',');
         if (process.env.EMAIL_SERVICE_ENABLED === true || process.env.EMAIL_SERVICE_ENABLED === 'true') {
             for (const adminEmail of adminEmailAddresses) {
-                const emailResult = await run(subject, body, adminEmail);
-                console.log('Weekly new user signup report email sent:', emailResult);
+                await sendEmailMessageToQueue({
+                    subject,
+                    body,
+                    recipient: adminEmail,
+                    sender: process.env.SENDER_EMAIL_ADDRESS
+                });
+                console.log(`Weekly new user signup report email message sent to queue for admin: ${adminEmail}`);
             }
         }
     } catch (error) {
