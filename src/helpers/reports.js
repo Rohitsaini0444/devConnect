@@ -1,6 +1,5 @@
 const { runCronJob } = require('../utils/scheduler.js');
 const User = require('../models/user.js');
-const { run } = require('../utils/sendEmail.js');
 
 const sendWeeklySignupReportToAdmin = async () => {
     try {

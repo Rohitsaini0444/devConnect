@@ -3,7 +3,6 @@ const router = express.Router();
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const { validateUserData } = require('../utils/validator');
-const { run } = require('../utils/sendEmail');
 const { sendEmailMessageToQueue } = require('../services/emailQueue.service');
 
 // Signup user

@@ -3,6 +3,7 @@ const router = express.Router();
 const { userAuth } = require('../middlewares/auth');
 const { validateEditProfileData, validatePasswordChange } = require('../utils/validator');
 const bcrypt = require('bcrypt');
+const { getProfilePhotoUploadUrl } = require('../controller/profilePhotoController');
 
 // Get user profile
 router.get('/view', userAuth, async (req, res) => {
@@ -72,5 +73,11 @@ router.patch('/password', userAuth, async (req, res) => {
     })
   }
 });
+
+router.post(
+    "/photo/upload-url",
+    userAuth,
+    getProfilePhotoUploadUrl
+);
 
 module.exports = router;
