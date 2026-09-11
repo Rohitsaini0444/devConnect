@@ -35,10 +35,12 @@ router.post('/send/:status/:userId', async (req, res) => {
             status
         });
         await connection.save();
+        req.log.info({ fromUserId, toUserId: userId, status }, "Connection request sent");
         res.status(200).json({
             message: "Request sent successfully"
         })
     } catch (error) {
+        req.log.error({ err: error, fromUserId: req.user?._id, toUserId: req.params?.userId }, "Failed to send connection request");
         res.status(400).json({
             message: "Error sending request",
             error: error?.message
@@ -69,11 +71,13 @@ router.post('/review/:status/:requestId', async (req, res) => {
         }
         existingRequest.status = status;
         await existingRequest.save();
+        req.log.info({ userId: req.user?._id, requestId, status }, "Connection request reviewed");
         res.status(200).json({
             message: "Request reviewed successfully",
             connection: existingRequest
         })
     } catch (error) {
+        req.log.error({ err: error, userId: req.user?._id, requestId: req.params?.requestId }, "Failed to review connection request");
         res.status(400).json({
             message: "Error reviewing request",
             error: error?.message

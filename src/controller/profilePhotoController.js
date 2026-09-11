@@ -53,7 +53,10 @@ const getProfilePhotoUploadUrl = async (req, res) => {
         });
 
     } catch (error) {
-        console.error(error);
+        req.log.error(
+            { err: error, userId: req.user?.id },
+            "Failed to generate profile photo upload URL"
+        );
 
         return res.status(500).json({
             message: "Failed to generate upload URL"

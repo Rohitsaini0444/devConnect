@@ -30,16 +30,18 @@ router.post('/signup', async (req, res) => {
                     sender: process.env.SENDER_EMAIL_ADDRESS
                 };
                 await sendEmailMessageToQueue(emailData);
-                console.log('Email message sent to queue successfully');
+                req.log.info({ recipient: savedUser.email }, 'Welcome email queued');
             }
         } catch (error) {
-            console.error('Error sending welcome email:', error);
+            req.log.error({ err: error, recipient: savedUser.email }, 'Failed to queue welcome email');
         }
+        req.log.info({ userId: savedUser._id }, 'User signup successful');
         res.status(200).json({
             message: "User created successfully",
             user: savedUser
         })
     } catch (error) {
+        req.log.error({ err: error }, 'User signup failed');
         res.status(400).json({
             message: error?.message || "Error creating user"
         })
@@ -71,11 +73,13 @@ router.post('/login', async (req, res) => {
         }
         const token = await user.getAuthenticatedUser();
         res.cookie('token', token, { httpOnly: true, expires: new Date(Date.now() + 3600000) });
+        req.log.info({ userId: user._id }, 'User login successful');
         res.status(200).json({
             message: "User logged in successfully",
             user
         })
     } catch (error) {
+        req.log.error({ err: error }, 'User login failed');
         res.status(400).json({
             message: error?.message || "Error logging in user"
         })
@@ -84,6 +88,7 @@ router.post('/login', async (req, res) => {
 
 router.post('/logout', (req, res) => {
     res.clearCookie('token');
+    req.log.info('User logout successful');
     res.send({
         message: "User logged out successfully"
     })

@@ -1,9 +1,10 @@
 const { runCronJob } = require('../utils/scheduler.js');
 const User = require('../models/user.js');
+const logger = require('../config/logger');
 
 const sendWeeklySignupReportToAdmin = async () => {
     try {
-        console.log('Running weekly signup report task...');
+        logger.info('Weekly signup report task started');
         const oneWeekAgo = new Date();
         oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
         const newUsers = await User.find({ createdAt: { $gte: oneWeekAgo } });
@@ -24,11 +25,11 @@ const sendWeeklySignupReportToAdmin = async () => {
                     recipient: adminEmail,
                     sender: process.env.SENDER_EMAIL_ADDRESS
                 });
-                console.log(`Weekly new user signup report email message sent to queue for admin: ${adminEmail}`);
+                logger.info({ recipient: adminEmail }, 'Weekly signup report email queued');
             }
         }
     } catch (error) {
-        console.error('Error occurred while scheduling email:', error);
+        logger.error({ err: error }, 'Weekly signup report task failed');
     }
 };
 
