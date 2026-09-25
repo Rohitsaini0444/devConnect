@@ -2,6 +2,7 @@ const paymentRouter = require('express').Router();
 const { instance } = require('../utils/razorpay');
 const { userAuth } = require('../middlewares/auth');
 const Payment = require('../models/payment');
+const User = require('../models/user');
 const { validateWebhookSignature } = require('razorpay/dist/utils/razorpay-utils');
 const logger = require('../config/logger');
 
