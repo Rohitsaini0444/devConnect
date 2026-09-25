@@ -1,66 +1,44 @@
 # devConnect
 
-## Overview
-`devConnect` is a developer networking backend built with Node.js, Express, and MongoDB. It enables developers to sign up, log in, manage profiles, and connect with other developers through interest-based requests.
+devConnect is a developer networking API. Users can create profiles, discover other developers, send and review connection requests, and access premium membership features.
 
 ## Features
-- User registration and authentication
-- Profile viewing and editing
-- Password updates
-- Connection requests with interested/rejected flow
-- User feed and connection discovery
+
+- Account registration, login, and logout
+- Profile viewing, editing, password changes, and profile photo uploads
+- Paginated developer feed and accepted connections
+- Connection requests with `interested`, `ignored`, `accepted`, and `rejected` states
+- Razorpay order creation and premium membership verification
+- Optional welcome emails and scheduled weekly signup reports
 
 ## Requirements
-- Node.js 18+ recommended
-- MongoDB connection
 
-## Installation
+- Node.js 18 or newer
+- MongoDB
+
+## Install and Run
+
 ```bash
-git clone <repository-url>
-cd devConnect
 npm install
-```
-
-## Environment
-Create a `.env` file in the project root with at least:
-```env
-MONGODB_URI=<your-mongo-connection-string>
-JWT_SECRET=<your-jwt-secret>
-```
-
-## Running the app
-```bash
 npm start
 ```
 
 For local development with automatic reloads:
+
 ```bash
 npm run dev
 ```
 
-## API Endpoints
-### Auth
-- `POST /auth/signup` — Register a new user
-- `POST /auth/login` — Log in and receive an auth cookie
-- `POST /auth/logout` — Log out the current user
+The API listens on port `3000` by default. Set `PORT` to use another port. The server connects to MongoDB before it begins listening.
 
-### Profile
-- `GET /profile/view` — Get the authenticated user's profile
-- `PATCH /profile/edit` — Update the authenticated user's profile
-- `PATCH /profile/password` — Change the authenticated user's password
+## Environment
 
-### Requests
-- `POST /request/send/:status/:userId` — Send a connection request (`interested` or `ignored`)
-- `POST /request/review/:status/:requestId` — Review a received request (`accepted` or `rejected`)
+Use [`.env.example`](.env.example) as the reference for environment variables, and keep local secrets out of source control.
 
-### User
-- `GET /user/user/requests/received` — Get received pending requests
-- `GET /user/user/connections` — Get accepted connections
-- `GET /user/feed` — Get a feed of suggested users
+## API Reference
 
-## Notes
-- The application expects JWT authentication and uses cookies to store the token.
-- The backend API is currently structured around Express routers and MongoDB models.
+See [apiList.md](apiList.md) for the complete endpoint list, authentication requirements, parameters, and short descriptions.
 
 ## License
-MIT
+
+ISC
