@@ -40,7 +40,7 @@ app.use('/auth', authRoutes);
 app.use('/profile',userAuth, profileRoutes);
 app.use('/request', userAuth, requestRoutes);
 app.use('/user', userAuth, userRoutes); 
-app.use('/payment', userAuth, paymentRoutes);
+app.use('/payment', paymentRoutes);
 
 
 connectDB().then(() => {
