@@ -9,6 +9,7 @@ const authRoutes = require('./routes/auth');
 const profileRoutes = require('./routes/profile');
 const requestRoutes = require('./routes/requests');
 const userRoutes = require('./routes/user');
+const paymentRoutes = require('./routes/payment');
 const connectDB = require('./config/database');
 const {startWeeklyReportsScheduler} = require('./helpers/reports');
 const httpLogger =  require("./middlewares/httpLogger");
@@ -39,7 +40,7 @@ app.use('/auth', authRoutes);
 app.use('/profile',userAuth, profileRoutes);
 app.use('/request', userAuth, requestRoutes);
 app.use('/user', userAuth, userRoutes); 
-
+app.use('/payment', userAuth, paymentRoutes);
 
 
 connectDB().then(() => {

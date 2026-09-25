@@ -56,8 +56,20 @@ const userSchema = new mongoose.Schema({
     about: {
         type: String,
         default: "Hey there! I am using Developer Connect."
+    },
+    premiumMember: {
+        type: Boolean,
+        default: false
+    },
+    membershipExpiry: {
+        type: Date,
+        default: null
+    },
+    membershipType: {
+        type: String,
+        default: null
     }
-},   { timestamps: true })
+}, { timestamps: true })
 
 userSchema.methods.getAuthenticatedUser = async function () {
     const user = this;
